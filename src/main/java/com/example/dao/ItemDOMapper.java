@@ -2,6 +2,8 @@ package com.example.dao;
 
 import com.example.dataobject.ItemDO;
 
+import java.util.List;
+
 public interface ItemDOMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -10,6 +12,8 @@ public interface ItemDOMapper {
     int insertSelective(ItemDO record);
 
     ItemDO selectByPrimaryKey(Integer id);
+
+    List<ItemDO> itemList();
 
     int updateByPrimaryKeySelective(ItemDO record);
 

@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.controller.viewobject.ItemVO;
+import com.example.dataobject.ItemStockDO;
 import com.example.error.BusinessException;
 import com.example.returntype.CommonReturnType;
 import com.example.service.ItemService;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/item")
@@ -35,12 +38,30 @@ public class ItemController extends BaseController{
         itemModel.setImgUrl(imgUrl);
 
         itemModel = itemService.creatItem(itemModel);
-        ItemVO itemVO = convertVOFromMode(itemModel);
+        ItemVO itemVO = convertVOFromModel(itemModel);
         return CommonReturnType.create(itemVO);
     }
 
-    private ItemVO convertVOFromMode(ItemModel itemModel) {
+    @GetMapping("/get")
+    @ResponseBody
+    public CommonReturnType getItem(@RequestParam(name="id") Integer id){
+        ItemModel itemModel = itemService.getItemById(id);
+        ItemVO itemVO = convertVOFromModel(itemModel);
+        return CommonReturnType.create(itemVO);
+    }
 
+    @GetMapping("list")
+    @ResponseBody
+    public CommonReturnType getItemList(){
+        List<ItemModel> itemModelList = itemService.listItem();
+        List<ItemVO> itemVOList = itemModelList.stream().map(itemModel -> {
+            ItemVO itemVO = convertVOFromModel(itemModel);
+            return itemVO;
+        }).collect(Collectors.toList());
+        return CommonReturnType.create(itemModelList);
+    }
+
+    private ItemVO convertVOFromModel(ItemModel itemModel) {
         if (itemModel == null){
             return null;
         }

@@ -11,7 +11,7 @@ public class ItemDO {
 
     private String description;
 
-    private String imgurl;
+    private String imgUrl;
 
     public Integer getId() {
         return id;
@@ -53,11 +53,11 @@ public class ItemDO {
         this.description = description == null ? null : description.trim();
     }
 
-    public String getImgurl() {
-        return imgurl;
+    public String getImgUrl() {
+        return imgUrl;
     }
 
-    public void setImgurl(String imgurl) {
-        this.imgurl = imgurl == null ? null : imgurl.trim();
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl == null ? null : imgUrl.trim();
     }
 }
