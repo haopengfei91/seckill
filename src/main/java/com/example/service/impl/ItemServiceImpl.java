@@ -4,6 +4,7 @@ import com.example.dao.ItemDOMapper;
 import com.example.dao.ItemStockDOMapper;
 import com.example.dataobject.ItemDO;
 import com.example.dataobject.ItemStockDO;
+import com.example.dataobject.UserDO;
 import com.example.error.BusinessException;
 import com.example.error.EmBusinessError;
 import com.example.service.ItemService;
@@ -93,6 +94,12 @@ public class ItemServiceImpl implements ItemService {
         ItemModel itemModel = convertModelFromDataObject(itemDO, itemStockDO);
 
         return itemModel;
+    }
+
+    @Override
+    @Transactional
+    public boolean decreaseStock(Integer itemId, Integer quantity) {
+        return itemStockDOMapper.decreaseStock(itemId, quantity);
     }
 
     private ItemModel convertModelFromDataObject(ItemDO itemDO, ItemStockDO itemStockDO) {

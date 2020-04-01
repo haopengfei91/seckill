@@ -24,7 +24,7 @@ public class ItemController extends BaseController{
 
     @PostMapping(value = "/create", consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
-    public CommonReturnType ceateItem(@RequestParam(name="title") String title,
+    public CommonReturnType createItem(@RequestParam(name="title") String title,
                                       @RequestParam(name="description") String description,
                                       @RequestParam(name="price") BigDecimal price,
                                       @RequestParam(name="stock") Integer stock,
@@ -50,7 +50,7 @@ public class ItemController extends BaseController{
         return CommonReturnType.create(itemVO);
     }
 
-    @GetMapping("list")
+    @GetMapping("/list")
     @ResponseBody
     public CommonReturnType getItemList(){
         List<ItemModel> itemModelList = itemService.listItem();

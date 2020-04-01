@@ -1,6 +1,7 @@
 package com.example.dao;
 
 import com.example.dataobject.ItemStockDO;
+import org.apache.ibatis.annotations.Param;
 
 public interface ItemStockDOMapper {
     int deleteByPrimaryKey(Integer id);
@@ -16,4 +17,6 @@ public interface ItemStockDOMapper {
     int updateByPrimaryKeySelective(ItemStockDO record);
 
     int updateByPrimaryKey(ItemStockDO record);
+
+    boolean decreaseStock(@Param("itemId") Integer itemId, @Param("quantity") Integer quantity);
 }
