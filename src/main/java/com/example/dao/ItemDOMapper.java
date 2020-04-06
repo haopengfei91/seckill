@@ -1,6 +1,7 @@
 package com.example.dao;
 
 import com.example.dataobject.ItemDO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface ItemDOMapper {
     int updateByPrimaryKeySelective(ItemDO record);
 
     int updateByPrimaryKey(ItemDO record);
+
+    void increaseSales(@Param("id") Integer id, @Param("quantity") Integer quantity);
 }

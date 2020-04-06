@@ -11,5 +11,6 @@ public interface ItemService {
     List<ItemModel> listItem();
     ItemModel getItemById(Integer id);
     boolean decreaseStock(Integer itemId, Integer quantity);
+    void increaseSales(Integer id, Integer quantity);
 
 }

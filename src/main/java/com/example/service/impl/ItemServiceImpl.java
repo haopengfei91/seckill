@@ -102,6 +102,12 @@ public class ItemServiceImpl implements ItemService {
         return itemStockDOMapper.decreaseStock(itemId, quantity);
     }
 
+    @Override
+    @Transactional
+    public void increaseSales(Integer id, Integer quantity) {
+        itemDOMapper.increaseSales(id, quantity);
+    }
+
     private ItemModel convertModelFromDataObject(ItemDO itemDO, ItemStockDO itemStockDO) {
         if (itemDO == null || itemStockDO == null){
             return null;
