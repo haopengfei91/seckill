@@ -10,6 +10,7 @@ public class OrderModel {
     private Integer itemId;
     private BigDecimal orderPrice;
     private Integer quantity;
+    private Integer promoId;
 
     public String getId() {
         return id;
@@ -57,5 +58,13 @@ public class OrderModel {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Integer getPromoId() {
+        return promoId;
+    }
+
+    public void setPromoId(Integer promoId) {
+        this.promoId = promoId;
     }
 }

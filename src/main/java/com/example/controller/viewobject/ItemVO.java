@@ -1,17 +1,23 @@
 package com.example.controller.viewobject;
 
+import com.example.error.PromoStatus;
+import org.joda.time.DateTime;
+
 import java.math.BigDecimal;
 
 public class ItemVO {
 
     private Integer id;
+    private Integer promoId;
     private String title;
-
     private BigDecimal price;
+    private BigDecimal promoPrice;
     private Integer stock;
     private String description;
     private Integer sales;
     private String imgUrl;
+    private String startDate;
+    private PromoStatus status;
 
     public Integer getId() {
         return id;
@@ -67,5 +73,37 @@ public class ItemVO {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public Integer getPromoId() {
+        return promoId;
+    }
+
+    public void setPromoId(Integer promoId) {
+        this.promoId = promoId;
+    }
+
+    public BigDecimal getPromoPrice() {
+        return promoPrice;
+    }
+
+    public void setPromoPrice(BigDecimal promoPrice) {
+        this.promoPrice = promoPrice;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public PromoStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PromoStatus status) {
+        this.status = status;
     }
 }

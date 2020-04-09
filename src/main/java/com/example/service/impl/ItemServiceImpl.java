@@ -7,8 +7,11 @@ import com.example.dataobject.ItemStockDO;
 import com.example.dataobject.UserDO;
 import com.example.error.BusinessException;
 import com.example.error.EmBusinessError;
+import com.example.error.PromoStatus;
 import com.example.service.ItemService;
+import com.example.service.PromoService;
 import com.example.service.model.ItemModel;
+import com.example.service.model.PromoModel;
 import com.example.validator.ValidationResult;
 import com.example.validator.ValidatorImpl;
 import org.springframework.beans.BeanUtils;
@@ -31,6 +34,8 @@ public class ItemServiceImpl implements ItemService {
     ValidatorImpl validator;
     @Autowired
     ItemStockDOMapper itemStockDOMapper;
+    @Autowired
+    PromoService promoService;
 
     @Override
     @Transactional
@@ -92,7 +97,10 @@ public class ItemServiceImpl implements ItemService {
 
         ItemStockDO itemStockDO = itemStockDOMapper.selectByItemId(itemDO.getId());
         ItemModel itemModel = convertModelFromDataObject(itemDO, itemStockDO);
-
+        PromoModel promoModel = promoService.getPromoByItemId(itemDO.getId());
+        if (promoModel != null && promoModel.getPromoStatus() != PromoStatus.HAVE_DONE){
+            itemModel.setPromoModel(promoModel);
+        }
         return itemModel;
     }
 

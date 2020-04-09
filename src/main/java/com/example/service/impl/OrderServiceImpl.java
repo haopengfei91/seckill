@@ -6,10 +6,13 @@ import com.example.dataobject.OrderDO;
 import com.example.dataobject.SequenceDO;
 import com.example.error.BusinessException;
 import com.example.error.EmBusinessError;
+import com.example.error.PromoStatus;
 import com.example.service.ItemService;
 import com.example.service.OrderService;
 import com.example.service.UserService;
+import com.example.service.model.ItemModel;
 import com.example.service.model.OrderModel;
+import com.example.service.model.UserModel;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,15 +37,27 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderModel createOrder(Integer userId, Integer itemId, Integer quantity) throws BusinessException {
-        if (userService.getUserById(userId) == null){
+    public OrderModel createOrder(Integer userId, Integer itemId, Integer promoId, Integer quantity) throws BusinessException {
+        UserModel userModel = userService.getUserById(userId);
+        if (userModel == null){
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "用户不存在");
         }
-        if (itemService.getItemById(itemId) == null){
+        ItemModel itemModel = itemService.getItemById(itemId);
+        if (itemModel == null){
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "商品不存在");
         }
         if (quantity < 0 || quantity > 99){
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "购买数量错误");
+        }
+
+        if (promoId != null){
+            if (promoId.intValue() != itemModel.getPromoModel().getId()){
+                throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "活动信息有误");
+            } else if (itemModel.getPromoModel().getPromoStatus() == PromoStatus.NOT_START){
+                throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "活动还未开始");
+            } else if (itemModel.getPromoModel().getPromoStatus() == PromoStatus.HAVE_DONE) {
+                throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "活动已结束");
+            };
         }
         boolean result = itemService.decreaseStock(itemId, quantity);
         if (!result){
@@ -52,10 +67,15 @@ public class OrderServiceImpl implements OrderService {
         orderModel.setId(generateOrderNO());
         orderModel.setUserId(userId);
         orderModel.setItemId(itemId);
+        orderModel.setPromoId(promoId);
         orderModel.setQuantity(quantity);
-        orderModel.setItemPrice(itemService.getItemById(itemId).getPrice());
-        orderModel.setOrderPrice(orderModel.getItemPrice().multiply(new BigDecimal(quantity)));
+        if (promoId != null){
+            orderModel.setItemPrice(itemModel.getPromoModel().getPromoPrice());
+        } else {
+            orderModel.setItemPrice(itemService.getItemById(itemId).getPrice());
+        }
 
+        orderModel.setOrderPrice(orderModel.getItemPrice().multiply(new BigDecimal(quantity)));
         OrderDO orderDO = convertDOFromModel(orderModel);
         orderDOMapper.insertSelective(orderDO);
 
